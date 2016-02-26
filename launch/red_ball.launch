@@ -1,0 +1,6 @@
+<launch>
+
+<node name="red_ball" pkg="jackal_red_ball" type="red_ball" output="screen">
+  </node>
+
+</launch>
