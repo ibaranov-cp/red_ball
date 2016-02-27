@@ -18,7 +18,7 @@ cv_image = None
 def Joycallback(data):
     global gogo
     gogo = data.buttons[11]
-    print gogo
+    #print gogo
 
 def Imagecallback(data):
     global cv_image
@@ -78,11 +78,14 @@ def func():
                 cv2.circle(blurred, (int(x), int(y)), int(radius),(0, 255, 255), 2)
                 cv2.circle(blurred, center, 5, (0, 0, 255), -1)
 
-                print center
-                print radius
+                #print center
+                #print radius
                 # We got the ball, calculate movement
                 cmd.linear.x = (50.0 - radius)/100.0 #0.5m/s at extreme range
                 cmd.angular.z = (320.0 - center[0])/640.0 # 0.5m/s at extreme offset
+        else:
+            cmd.linear.x = 0
+            cmd.angular.z = 0 #Ensure no runaway
                 
                 
         #cv2.imshow("Image window", blurred)
