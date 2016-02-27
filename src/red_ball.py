@@ -48,6 +48,10 @@ def func():
         pass
     print "starting"
 
+    avg = 10 #averaging speed
+    velx = [0] * avg
+    velz = [0] * avg
+
     while not rospy.is_shutdown():
 
         # Code takes image received, tries to face ball at distance of ~ 0.5m
@@ -81,11 +85,15 @@ def func():
                 #print center
                 #print radius
                 # We got the ball, calculate movement
-                cmd.linear.x = (50.0 - radius)/100.0 #0.5m/s at extreme range
-                cmd.angular.z = (320.0 - center[0])/640.0 # 0.5m/s at extreme offset
+                velx.pop(0)
+                velx.append((50.0 - radius)/100.0) #0.5m/s at extreme range
+                velz.pop(0)
+                velz.append((320.0 - center[0])/640.0) # 0.5m/s at extreme offset
         else:
-            cmd.linear.x = 0
-            cmd.angular.z = 0 #Ensure no runaway
+            velx.pop(0)
+            velx.append(0)
+            velz.pop(0)
+            velz.append(0) #Ensure no runaway
                 
                 
         #cv2.imshow("Image window", blurred)
@@ -93,7 +101,10 @@ def func():
 
 
         # Ensure ball following only works when deadman is held down
-        if gogo == 1: pub.publish(cmd)
+        if gogo == 1: 
+            cmd.linear.x = np.mean(velx) #Averaging function
+            cmd.angular.z =  np.mean(velz)
+            pub.publish(cmd)
 
         rate.sleep()
 
