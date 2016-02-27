@@ -1,6 +1,6 @@
 <launch>
 
-<node name="red_ball" pkg="jackal_red_ball" type="red_ball" output="screen">
+<node name="jackal_red_ball" pkg="red_ball" type="red_ball.py" respawn="true" output="screen">
   </node>
 
 </launch>
